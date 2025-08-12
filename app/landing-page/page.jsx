@@ -1,4 +1,5 @@
 import Hero from '@/components/landingPage/Hero'
+import { MarqueeDemo } from '@/components/landingPage/MarqueeDemo'
 import Section2 from '@/components/landingPage/Section2'
 import { MaksedDivDemo } from '@/components/MaksedDivDemo'
 import { MaskedDivSwiperCarousel } from '@/components/MaskedDivSwiperCarousel'
@@ -11,6 +12,7 @@ export default function LandingPage() {
       {/* <Section2 /> */}
       {/* <MaksedDivDemo/> */}
       <MaskedDivSwiperCarousel />
+      <MarqueeDemo />
     </div>
   )
 }
