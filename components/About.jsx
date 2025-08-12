@@ -1,5 +1,5 @@
-'use client';
-import { useEffect, useState } from 'react';
+"use client";
+import { useEffect, useState } from "react";
 
 export default function About() {
   const [offsetY, setOffsetY] = useState(0);
@@ -17,10 +17,13 @@ export default function About() {
     <div className="font-sans relative">
       {/* Section 1 — scrolls slower */}
       <section
-        className="h-screen bg-yellow-500 flex items-center justify-center"
+        className="h-[100vh] bg-yellow-500 flex items-center justify-center"
         style={{
-          transform: `translateY(${offsetY * 0.2}px)`, // 0.4 = slower scroll
-          position: 'relative',
+          backgroundImage: `url("https://images.pexels.com/photos/356056/pexels-photo-356056.jpeg")`,
+           backgroundSize: "cover",
+          backgroundPosition: "center",
+          transform: `translateY(${offsetY * 0.12}px)`, // 0.4 = slower scroll
+          position: "relative",
           zIndex: 30,
         }}
       >
@@ -28,8 +31,17 @@ export default function About() {
       </section>
 
       {/* Section 2 — sticky behind Section 1 */}
-      <section className="h-screen sticky top-0 z-10 bg-white flex items-center justify-center">
-        <h1 className="text-6xl font-bold text-black">Section 2 (from behind)</h1>
+      <section
+        className="h-screen sticky top-0 z-10 bg-white flex items-center justify-center"
+        style={{
+          backgroundImage: `url("https://images.pexels.com/photos/5712529/pexels-photo-5712529.jpeg")`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <h1 className="text-6xl font-bold text-black">
+          Section 2 (from behind)
+        </h1>
       </section>
 
       {/* Section 3 — on top */}
