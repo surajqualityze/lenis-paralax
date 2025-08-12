@@ -1,4 +1,6 @@
+import FlowingMenuDemo from '@/components/flowing-menu/FlowingMenuDemo'
 import Hero from '@/components/landingPage/Hero'
+import LogoCarouselDemo from '@/components/landingPage/LogoCarouselDemo'
 import { MarqueeDemo } from '@/components/landingPage/MarqueeDemo'
 import Section2 from '@/components/landingPage/Section2'
 import { MaksedDivDemo } from '@/components/MaksedDivDemo'
@@ -13,6 +15,8 @@ export default function LandingPage() {
       {/* <MaksedDivDemo/> */}
       <MaskedDivSwiperCarousel />
       <MarqueeDemo />
+      <FlowingMenuDemo />
+      <LogoCarouselDemo />
     </div>
   )
 }
