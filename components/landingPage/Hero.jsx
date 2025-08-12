@@ -89,8 +89,8 @@ export default function Hero() {
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 items-center w-full max-w-6xl mx-auto">
           <div className="order-2 md:order-1">
-            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-black mb-4 leading-tight">
-              SaaSential
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-red-800 mb-4 leading-tight">
+              Qualityze
             </h1>
             <p className="text-base sm:text-lg md:text-2xl text-black">
               The ultimate platform to manage and scale your SaaS business.
