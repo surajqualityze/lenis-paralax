@@ -5,6 +5,7 @@ import { MarqueeDemo } from '@/components/landingPage/MarqueeDemo'
 import Section2 from '@/components/landingPage/Section2'
 import { MaksedDivDemo } from '@/components/MaksedDivDemo'
 import { MaskedDivSwiperCarousel } from '@/components/MaskedDivSwiperCarousel'
+import RightCarasoul from '@/components/RightCarasoul'
 import React from 'react'
 
 export default function LandingPage() {
@@ -15,8 +16,9 @@ export default function LandingPage() {
       {/* <MaksedDivDemo/> */}
       <MaskedDivSwiperCarousel />
       <MarqueeDemo />
-      <FlowingMenuDemo />
+      {/* <FlowingMenuDemo /> */}
       <LogoCarouselDemo />
+       <RightCarasoul />
     </div>
   )
 }
