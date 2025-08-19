@@ -2,6 +2,8 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import FadeOverlay from "@/components/ui/FadeOverlay";
+import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -83,30 +85,34 @@ export default function Page() {
                 </div>
 
                 {/* IMAGE scrolls across viewport */}
-                {/* IMAGE scrolls across viewport */}
-                <div className="flex-1 flex items-center justify-center overflow-hidden relative h-screen ">
+                <FadeOverlay>
                   <div className="image-container flex items-center justify-center h-full">
-                    <img
+                    <Image
                       src={section.imageUrl}
                       alt={section.heading}
+                      width={1200}
+                      height={800}
+                      priority={index === 0} // first section loads eagerly, others lazy
                       className="max-h-[80vh] max-w-full object-contain rounded-lg shadow-lg mx-auto"
                     />
                   </div>
-                </div>
+                </FadeOverlay>
               </>
             ) : (
               <>
-
                 {/* IMAGE scrolls across viewport */}
-                <div className="flex-1 flex items-center justify-center overflow-hidden relative h-screen ">
+                <FadeOverlay>
                   <div className="image-container flex items-center justify-center h-full">
-                    <img
+                    <Image
                       src={section.imageUrl}
                       alt={section.heading}
+                      width={1200}
+                      height={800}
+                      priority={index === 0} // first section loads eagerly, others lazy
                       className="max-h-[80vh] max-w-full object-contain rounded-lg shadow-lg mx-auto"
                     />
                   </div>
-                </div>
+                </FadeOverlay>
 
                 {/* TEXT stays fixed */}
                 <div className="flex-1 pl-8 z-20">
