@@ -10,11 +10,11 @@ const LampContainer = ({ children, className, triggerAnimation }) => {
     <div className={`relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-slate-950 w-full z-0 ${className}`}>
       <div className="relative flex w-full flex-1 scale-y-125 items-center justify-center isolate z-0">
         <motion.div
-          initial={{ opacity: 0.2, width: "8rem" }} // Start smaller and dimmer
+          initial={{ opacity: 0.2, width: "8rem" }}
           animate={triggerAnimation ? { opacity: 1, width: "30rem" } : { opacity: 0.2, width: "8rem" }}
           transition={{
-            delay: 0.1, // Lamp animates first
-            duration: 1.2,
+            delay: triggerAnimation ? 0.1 : 0, // No delay when reversing
+            duration: triggerAnimation ? 1.2 : 0.8, // Faster reverse
             ease: "easeInOut",
           }}
           style={{
@@ -27,11 +27,11 @@ const LampContainer = ({ children, className, triggerAnimation }) => {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0.2, width: "8rem" }} // Start smaller and dimmer
+          initial={{ opacity: 0.2, width: "8rem" }}
           animate={triggerAnimation ? { opacity: 1, width: "30rem" } : { opacity: 0.2, width: "8rem" }}
           transition={{
-            delay: 0.1, // Lamp animates first
-            duration: 1.2,
+            delay: triggerAnimation ? 0.1 : 0,
+            duration: triggerAnimation ? 1.2 : 0.8,
             ease: "easeInOut",
           }}
           style={{
@@ -47,33 +47,33 @@ const LampContainer = ({ children, className, triggerAnimation }) => {
         <div className="absolute top-1/2 z-50 h-48 w-full bg-transparent opacity-10 backdrop-blur-md"></div>
 
         <motion.div
-          initial={{ opacity: 0.1, scale: 0.5 }} // Start smaller and dimmer
+          initial={{ opacity: 0.1, scale: 0.5 }}
           animate={triggerAnimation ? { opacity: 0.5, scale: 1 } : { opacity: 0.1, scale: 0.5 }}
           transition={{
-            delay: 0.2,
-            duration: 1.0,
+            delay: triggerAnimation ? 0.2 : 0,
+            duration: triggerAnimation ? 1.0 : 0.6,
             ease: "easeInOut",
           }}
           className="absolute inset-auto z-50 h-36 w-[28rem] -translate-y-1/2 rounded-full bg-cyan-500 opacity-50 blur-3xl"
         />
         
         <motion.div
-          initial={{ width: "4rem", opacity: 0.3 }} // Start much smaller
+          initial={{ width: "4rem", opacity: 0.3 }}
           animate={triggerAnimation ? { width: "16rem", opacity: 1 } : { width: "4rem", opacity: 0.3 }}
           transition={{
-            delay: 0.3,
-            duration: 1.0,
+            delay: triggerAnimation ? 0.3 : 0,
+            duration: triggerAnimation ? 1.0 : 0.6,
             ease: "easeInOut",
           }}
           className="absolute inset-auto z-30 h-36 w-64 -translate-y-[6rem] rounded-full bg-cyan-400 blur-2xl"
         ></motion.div>
 
         <motion.div
-          initial={{ width: "8rem", opacity: 0.2 }} // Start much smaller
+          initial={{ width: "8rem", opacity: 0.2 }}
           animate={triggerAnimation ? { width: "30rem", opacity: 1 } : { width: "8rem", opacity: 0.2 }}
           transition={{
-            delay: 0.4,
-            duration: 1.0,
+            delay: triggerAnimation ? 0.4 : 0,
+            duration: triggerAnimation ? 1.0 : 0.6,
             ease: "easeInOut",
           }}
           className="absolute inset-auto z-50 h-0.5 w-[30rem] -translate-y-[7rem] bg-cyan-400"
@@ -95,7 +95,7 @@ export default function Page() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     
-    // Section One slides up
+    // Section One slides up with reverse capability
     gsap.to("#section-one", {
       y: "-100vh",
       ease: "none",
@@ -103,26 +103,50 @@ export default function Page() {
         trigger: "#reveal-container",
         start: "top top",
         end: "50% top",
-        scrub: 1,
+        scrub: 1, // This automatically handles reverse on scroll up
         id: "section-one-reveal"
       }
     });
 
-    // Trigger lamp animation when Section One starts sliding up
+    // Enhanced lamp trigger with proper reverse handling
     ScrollTrigger.create({
       trigger: "#reveal-container",
-      start: "10% top", // Trigger early when Section One starts moving
+      start: "10% top",
       end: "40% top",
       onEnter: () => {
-        console.log("Lamp animation triggered!");
+        console.log("Lamp animation triggered - forward!");
+        setLampAnimation(true);
+      },
+      onLeave: () => {
+        console.log("Lamp animation off - forward scroll continues!");
+        // Keep lamp on while Section Two is visible
+      },
+      onEnterBack: () => {
+        console.log("Lamp animation triggered - scroll back up!");
         setLampAnimation(true);
       },
       onLeaveBack: () => {
+        console.log("Lamp animation off - scrolled back to top!");
         setLampAnimation(false);
       }
     });
+
+    // Additional trigger to turn off lamp when Section Three starts covering
+    ScrollTrigger.create({
+      trigger: "#reveal-container",
+      start: "50% top",
+      end: "60% top",
+      onEnter: () => {
+        console.log("Section Three coming - turning off lamp!");
+        setLampAnimation(false);
+      },
+      onLeaveBack: () => {
+        console.log("Section Three going back - turning on lamp!");
+        setLampAnimation(true);
+      }
+    });
     
-    // Section Three slides over Section Two
+    // Section Three slides over Section Two with reverse capability
     gsap.fromTo("#section-three", 
       { y: "100vh" },
       { 
@@ -132,12 +156,8 @@ export default function Page() {
           trigger: "#reveal-container",
           start: "50% top",
           end: "bottom top",
-          scrub: 1,
-          id: "section-three-cover",
-          onStart: () => {
-            // Turn off lamp when Section Three starts covering
-            setLampAnimation(false);
-          }
+          scrub: 1, // Automatically reverses when scrolling up
+          id: "section-three-cover"
         }
       }
     );
@@ -183,13 +203,13 @@ export default function Page() {
               initial={{ opacity: 0, y: 100, scale: 0.8 }}
               animate={lampAnimation ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 100, scale: 0.8 }}
               transition={{
-                delay: 0.8, // Text comes AFTER lamp animation (0.8s delay)
-                duration: 1.0,
+                delay: lampAnimation ? 0.8 : 0, // No delay when reversing
+                duration: lampAnimation ? 1.0 : 0.5, // Faster reverse for text
                 ease: "easeInOut",
               }}
               className="mt-8 bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl"
             >
-              Section 2 (from behind)- In this blog post, we are going to guide you through the basics of FMEA, its best applications, the guidelines that steer it, and how to perform a good analysis.
+              Section Two <br /> (Revealed)
             </motion.h1>
           </LampContainer>
         </section>
@@ -210,6 +230,8 @@ export default function Page() {
             Section Three
           </h1>
         </section>
+        
+        
       </div>
     </div>
   )
